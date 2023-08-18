@@ -1,4 +1,5 @@
 import csv
+import os
 from logging.config import valid_ident
 import matplotlib.pyplot as plt
 
@@ -9,6 +10,12 @@ print(value)
 
 # filename = "22031501.LOG"
 filename = "21122001.LOG"
+
+# directory where the log files are stored
+log_dir = 'Logs/'
+
+# set the output directory as "monthly"
+output_dir = "monthly"
 
 # list all log files in the directory
 log_files = os.listdir(log_dir)
@@ -116,5 +123,9 @@ for log_file in log_files:
     # function to show the plot
     ax.show()
     ax.savefig(log_file + ".png")
+
+    # save the plot to a file in the monthly subdirectory
+    file_name_out = os.path.join(output_dir, "{}.png".format(date.strftime("%Y-%m-%d")))
+    plt.savefig(file_name_out)
 
     
