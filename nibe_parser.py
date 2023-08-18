@@ -2,16 +2,7 @@ import csv
 from logging.config import valid_ident
 import matplotlib.pyplot as plt
 
-plot_temp_out = []
-plot_water_in = []
-plot_water_out = []
-plot_water_down = []
-plot_water_up = []
-plot_temp_waste = []
-plot_temp_in = []
-plot_temp_room = []
-plot_power = []
-plot_prio = []
+
 
 value = plt.get_backend()
 print(value)
@@ -27,6 +18,17 @@ fig, ax = plt.subplots()
 
 # iterate over the log files
 for log_file in log_files:
+
+    plot_temp_out = []
+    plot_water_in = []
+    plot_water_out = []
+    plot_water_down = []
+    plot_water_up = []
+    plot_temp_waste = []
+    plot_temp_in = []
+    plot_temp_room = []
+    plot_power = []
+    plot_prio = []
 
     # open the log file
     with open(log_file, 'r') as f:
@@ -76,43 +78,43 @@ for log_file in log_files:
  
 
 
-plt.subplot(1, 1, 1)
+    ax.ylim(-35, 75)
 
-plt.ylim(-30, 75)
+    ax.axhline(y=-20, color='g', linestyle=':')
+    ax.axhline(y=0, color='g', linestyle=':')
+    ax.axhline(y=20, color='g', linestyle=':')
+    ax.axhline(y=40, color='g', linestyle=':')
+    ax.axhline(y=60, color='g', linestyle=':')
 
-plt.axhline(y=-20, color='g', linestyle=':')
-plt.axhline(y=0, color='g', linestyle=':')
-plt.axhline(y=20, color='g', linestyle=':')
-plt.axhline(y=40, color='g', linestyle=':')
-plt.axhline(y=60, color='g', linestyle=':')
+    ax.rcParams["figure.autolayout"] = True
+    line1, = ax.plot(plot_temp_out, label = "Outside temp")
+    line2, = ax.plot(plot_temp_in, ls = ':', label = "Temp in")
+    line3, = ax.plot(plot_temp_room, ls = ':', label = "Temp room")
+    line4, = ax.plot(plot_temp_waste, label="Temp waste")
+    line5, = ax.plot(plot_water_in, ls = ':', label = "Cycle Water in")
+    line6, = ax.plot(plot_water_out, label="Cycle Water out")
+    line7, = ax.plot(plot_water_up, ls = ':', label = "Water up ")
+    line8, = ax.plot(plot_water_down, label = "Water down")
+    line9, = ax.plot(plot_power, label = "Power")
+    line10, = ax.plot(plot_prio, label = "Mode")
 
-plt.rcParams["figure.autolayout"] = True
-line1, = plt.plot(plot_temp_out, label = "Outside temp")
-line2, = plt.plot(plot_temp_in, ls = ':', label = "Temp in")
-line3, = plt.plot(plot_temp_room, ls = ':', label = "Temp room")
-line4, = plt.plot(plot_temp_waste, label="Temp waste")
-line5, = plt.plot(plot_water_in, ls = ':', label = "Cycle Water in")
-line6, = plt.plot(plot_water_out, label="Cycle Water out")
-line7, = plt.plot(plot_water_up, ls = ':', label = "Water up ")
-line8, = plt.plot(plot_water_down, label = "Water down")
-line9, = plt.plot(plot_power, label = "Power")
-line10, = plt.plot(plot_prio, label = "Mode")
+    ax.legend(bbox_to_anchor=(1,0.5), loc="center left", borderaxespad=0)
+    # leg = ax.legend(loc='upper right')
 
-plt.legend(bbox_to_anchor=(1,0.5), loc="center left", borderaxespad=0)
-# leg = plt.legend(loc='upper right')
+    # naming the x axis
+    ax.xlabel('x - axis')
+    # naming the y axis
+    ax.ylabel('y - axis')
+        
+    # giving a title to my graph
+    ax.title(filename)
 
-# naming the x axis
-plt.xlabel('x - axis')
-# naming the y axis
-plt.ylabel('y - axis')
+    # WX backend full screen
+    manager = ax.get_current_fig_manager()
+    manager.frame.Maximize(True)
+
+    # function to show the plot
+    ax.show()
+    ax.savefig(log_file + ".png")
+
     
-# giving a title to my graph
-plt.title(filename)
-
-# WX backend full screen
-manager = plt.get_current_fig_manager()
-manager.frame.Maximize(True)
-
-# function to show the plot
-plt.show()
-plt.savefig(filename + ".png")
