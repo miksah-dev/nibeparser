@@ -9,16 +9,18 @@ value = plt.get_backend()
 print(value)
 
 # filename = "22031501.LOG"
-filename = "21122001.LOG"
+#filename = "21122001.LOG"
 
 # directory where the log files are stored
 log_dir = 'Logs/'
 
 # set the output directory as "monthly"
-output_dir = "monthly"
+output_dir = "monthly/"
 
 # list all log files in the directory
 log_files = os.listdir(log_dir)
+
+print (log_files)
 
 # create a figure for the plot
 fig, ax = plt.subplots()
@@ -38,7 +40,7 @@ for log_file in log_files:
     plot_prio = []
 
     # open the log file
-    with open(log_file, 'r') as f:
+    with open(os.path.join(log_dir, log_file), 'r') as f:
         # create a csv reader object
         reader = csv.reader(f, delimiter='\t')
 
@@ -85,15 +87,17 @@ for log_file in log_files:
  
 
 
-    ax.ylim(-35, 75)
-
+    ax.set_ylim(-35, 75)
+    
     ax.axhline(y=-20, color='g', linestyle=':')
     ax.axhline(y=0, color='g', linestyle=':')
     ax.axhline(y=20, color='g', linestyle=':')
     ax.axhline(y=40, color='g', linestyle=':')
     ax.axhline(y=60, color='g', linestyle=':')
 
-    ax.rcParams["figure.autolayout"] = True
+    plt.rcParams["figure.autolayout"] = True
+    ax.set_sketch_params()
+
     line1, = ax.plot(plot_temp_out, label = "Outside temp")
     line2, = ax.plot(plot_temp_in, ls = ':', label = "Temp in")
     line3, = ax.plot(plot_temp_room, ls = ':', label = "Temp room")
@@ -109,23 +113,24 @@ for log_file in log_files:
     # leg = ax.legend(loc='upper right')
 
     # naming the x axis
-    ax.xlabel('x - axis')
+    ax.set_xlabel('x - axis')
     # naming the y axis
-    ax.ylabel('y - axis')
+    ax.set_ylabel('y - axis')
         
     # giving a title to my graph
-    ax.title(filename)
-
+    ax.set_title (log_file)
+    
     # WX backend full screen
-    manager = ax.get_current_fig_manager()
-    manager.frame.Maximize(True)
+    manager = plt.get_current_fig_manager()
+
 
     # function to show the plot
-    ax.show()
-    ax.savefig(log_file + ".png")
-
+    # plt.show()
+        
     # save the plot to a file in the monthly subdirectory
-    file_name_out = os.path.join(output_dir, "{}.png".format(date.strftime("%Y-%m-%d")))
-    plt.savefig(file_name_out)
+    #plt.savefig("monthly/{log_file[:-4]}.png")
+    plot_filename = os.path.join(output_dir, f"{log_file[:-4]}.png")
+    plt.savefig(plot_filename)
+    
 
     
